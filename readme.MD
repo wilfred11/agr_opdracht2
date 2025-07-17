@@ -1,3 +1,2 @@
 This project was created while tackling an assignment on bayesian learnning in pyagrum, a Python package that can be used to infer, create, explore, compare, ... Bayesian Networks and derivatives.
-I can only refer to a pdf describing the different functions that were created to complete the assignment. As the project was changed slightly after creating the pdf it only differs only in the details.
-
+I can only refer to a [pdf](https://github.com/wilfred11/agr_opdracht2/blob/master/opdracht2-brml-wvc.pdf) describing the different functions that were created to complete the assignment.
