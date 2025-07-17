@@ -5,7 +5,7 @@ Instructions to use this project:
 - Install pycharm (community edition)
 - Open PyCharm
 - From File menu select Project from version control
-- In the terminal type poetry install (this command should install all required packages, except some)
+- In the terminal type poetry install (this command should install all required packages, except some globally required)
 - Download and instal  graphviz for windows 12.2.1 / add  bin directory to path
 - Download and install c++ build tools  14.0 (if not already installed)
 - Reopen Pycharm, clean caches 
