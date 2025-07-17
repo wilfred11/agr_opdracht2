@@ -1,12 +1,11 @@
-import pyagrum as gum
 import pyagrum.lib.image as gumimage
 import pandas as pd
 import pyagrum.lib.notebook as gnb
 import pyagrum as gum
 import pyagrum.lib.bn_vs_bn as bnvsbn
-from IPython.display import display, HTML
+from pyagrum.lib.bn2roc import showROC
 import os
-basedir="opdracht2"
+basedir=""
 
 
 def get_data(bc_binary):
@@ -63,51 +62,24 @@ def export_html_string(html, name):
     Func.write(html)
     Func.close()
 
-
 def create_dirs(dir, alg):
     if not dir == "":
         dir = dir + "/"
-        try:
-            os.mkdir(dir)
-        except:
-            pass
+        os.makedirs(dir,exist_ok=True )
 
-    try:
-        if not dir == "":
-            os.mkdir(basedir + "/" + dir)
-            print("dir created")
-    except:
-        pass
-    print('ok1')
-    network = dir + "network/"
-    try:
-        os.mkdir(network)
-    except:
-        pass
-    print('ok2')
-    network += alg + "/"
-    try:
-        os.mkdir(network)
-    except:
-        pass
-    print('ok3')
-
-    ndir = dir + "out/"
-
-    try:
-        os.mkdir(ndir)
-    except:
-        pass
+    #os.makedirs(dir, exist_ok=True)
+    network = dir + "network/" + alg + "/"
+    os.makedirs(network, exist_ok=True)
+    outdir = dir + "out/"+alg
+    os.makedirs(outdir, exist_ok=True)
 
     dir += "out/" + alg
+    os.makedirs(dir, exist_ok=True)
 
-    try:
-        os.mkdir(dir)
-    except:
-        pass
-    print('ok5')
     print(network)
+    print(dir)
     return network, dir
+
 
 
 def learn(data, template, smoothing, alg, dir=""):
@@ -129,7 +101,7 @@ def learn(data, template, smoothing, alg, dir=""):
     bn3 = learner.learnParameters(bn2)
     inf = gnb.getInference(bn3)
     if dir == "":
-        export_html_string(inf, "opdracht2/out/inf")
+        export_html_string(inf, "agr_opdracht2/out/inf")
     else:
         export_html_string(inf, dir + "/inf")
     gumimage.export(bn3, dir + "/bn-learned.png")
@@ -193,3 +165,32 @@ def get_gen_data(alg, number, validation=False):
     bal_data = pd.concat([bc_data.sample(int(number / 2)), nobc_data.sample(int(number / 2))])
 
     return bal_data
+
+def generate_sample_files(miic_learned_bn, greedy_learned_bn, gt_learned_bn):
+    os.makedirs("data/out/miic/", exist_ok=True)
+    os.makedirs("data/out/greedy/", exist_ok=True)
+    os.makedirs("data/out/pc/", exist_ok=True)
+
+    gum.generateSample(miic_learned_bn, 10000, "data/out/miic/miic.csv", show_progress=True, with_labels=True)
+    gum.generateSample(greedy_learned_bn, 10000, "data/out/greedy/greedy.csv", show_progress=True, with_labels=True)
+    gum.generateSample(gt_learned_bn, 10000, "data/out/pc/pc.csv", show_progress=True, with_labels=True)
+    gum.generateSample(gt_learned_bn, 10000, "data/out/pc/pc_validation.csv", show_progress=True, with_labels=True)
+
+def get_samples():
+    validation = get_gen_data("pc", 1000, validation=True)
+    smp100 = get_gen_data("pc", 100)
+    smp500 = get_gen_data("pc", 500)
+    smp1000 = get_gen_data("pc", 1000)
+    return validation,smp100, smp500, smp1000
+
+def get_networks(smp100,smp500,smp1000, template):
+    miic_1000_learned_bn = learn(smp1000, template, 0, "miic", "miic1000")
+    miic_500_learned_bn = learn(smp500, template, 0, "miic", "miic500")
+    miic_100_learned_bn = learn(smp100, template, 0, "miic", "miic100")
+    greedy_1000_learned_bn = learn(smp1000, template, 0, "greedy", "greedy1000")
+    greedy_500_learned_bn = learn(smp500, template, 0, "greedy", "greedy500")
+    greedy_100_learned_bn = learn(smp100, template, 0, "greedy", "greedy100")
+    return miic_100_learned_bn, miic_500_learned_bn, miic_1000_learned_bn, greedy_100_learned_bn, greedy_500_learned_bn, greedy_1000_learned_bn
+
+def show_roc(network, data):
+    showROC(network, data, 'BC', 'Yes', show_progress=False, show_fig=True, save_fig=False, with_labels=True, significant_digits=4)
