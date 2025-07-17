@@ -12,3 +12,11 @@ Instructions to use this project:
 - Maybe even restart Windows 10/11
 
 For my setup this was enough but it is not always the case
+
+The packages needed for this setup are (to be found in pyproject.toml)
+python = "^3.11"
+pyagrum = "^2.1.1"
+pandas = "^2.3.1"
+ipython = "^9.4.0"
+scikit-learn = "^1.7.0"
+tqdm = "^4.67.1"
