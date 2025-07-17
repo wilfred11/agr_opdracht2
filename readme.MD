@@ -10,4 +10,5 @@ Instructions to use this project:
 - Download and install c++ build tools  14.0 (if not already installed)
 - Reopen Pycharm, clean caches 
 - Maybe even restart Windows 10/11
+
 For my setup this was enough but it is not always the case
