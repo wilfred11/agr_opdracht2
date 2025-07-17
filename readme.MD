@@ -13,7 +13,7 @@ Instructions to use this project:
 
 For my setup this was enough but it is not always the case
 
-The packages needed for this setup are (to be found in pyproject.toml)
+The packages needed for this setup are (to be found in [pyproject.toml](https://github.com/wilfred11/agr_opdracht2/blob/master/pyproject.toml)
 
 python = "^3.11"
 
