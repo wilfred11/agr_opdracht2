@@ -11,7 +11,7 @@ Instructions to use this project:
 - Reopen Pycharm, clean caches 
 - Maybe even restart Windows 10/11
 
-For my setup this was enough but it is not always the case
+For my setup this was enough but this is not always the case
 
 The packages needed for this setup are (to be found in [pyproject.toml](https://github.com/wilfred11/agr_opdracht2/blob/master/pyproject.toml))
 
